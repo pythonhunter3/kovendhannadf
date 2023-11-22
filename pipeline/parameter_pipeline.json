@@ -1,0 +1,66 @@
+{
+	"name": "parameter_pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "output_to_archive",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "DelimitedText4",
+						"type": "DatasetReference",
+						"parameters": {
+							"pp_filesystem": {
+								"value": "@pipeline().parameters.p_filesystem",
+								"type": "Expression"
+							},
+							"pp_directory": {
+								"value": "@pipeline().parameters.p_directory",
+								"type": "Expression"
+							},
+							"pp_filename": {
+								"value": "@pipeline().parameters.p_filename",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"p_filesystem": {
+				"type": "String"
+			},
+			"p_directory": {
+				"type": "String"
+			},
+			"p_filename": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
