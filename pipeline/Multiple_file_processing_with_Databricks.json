@@ -1,0 +1,104 @@
+{
+	"name": "Multiple_file_processing_with_Databricks",
+	"properties": {
+		"activities": [
+			{
+				"name": "File_ingestion",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "Dataset",
+						"type": "DatasetReference",
+						"parameters": {
+							"pp_filesystem": {
+								"value": "@pipeline().parameters.ds_filesystem",
+								"type": "Expression"
+							},
+							"pp_directory": {
+								"value": "@pipeline().parameters.ds_directory",
+								"type": "Expression"
+							},
+							"pp_filename": {
+								"value": "@pipeline().parameters.ds_filename",
+								"type": "Expression"
+							}
+						}
+					},
+					"fieldList": [
+						"itemName",
+						"itemType"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "ForLoop",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "File_ingestion",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('File_ingestion').output",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Databricks",
+							"type": "DatabricksNotebook",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "AzureDatabricks1",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"ds_filesystem": {
+				"type": "String"
+			},
+			"ds_directory": {
+				"type": "String"
+			},
+			"filename": {
+				"type": "String"
+			},
+			"ds_filename": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
