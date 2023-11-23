@@ -76,6 +76,12 @@
 								"secureInput": false
 							},
 							"userProperties": [],
+							"typeProperties": {
+								"notebookPath": {
+									"value": "/Users/devikasaravanan17@gmail.com/Multiple_file_processing",
+									"type": "Expression"
+								}
+							},
 							"linkedServiceName": {
 								"referenceName": "AzureDatabricks1",
 								"type": "LinkedServiceReference"
