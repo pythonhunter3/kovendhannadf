@@ -63,9 +63,10 @@
 						"value": "@activity('File_ingestion').output",
 						"type": "Expression"
 					},
+					"isSequential": true,
 					"activities": [
 						{
-							"name": "Databricks",
+							"name": "Notebook_for_fileprocessing",
 							"type": "DatabricksNotebook",
 							"dependsOn": [],
 							"policy": {
