@@ -26,10 +26,6 @@
 							"pp_directory": {
 								"value": "@pipeline().parameters.ds_directory",
 								"type": "Expression"
-							},
-							"pp_filename": {
-								"value": "@pipeline().parameters.ds_filename",
-								"type": "Expression"
 							}
 						}
 					},
